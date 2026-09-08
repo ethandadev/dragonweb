@@ -4,6 +4,10 @@ get ready for development
 
 1. install node from https://nodejs.org
 
+2. get git from https://git-scm.com/install/mac
+
+3. clone the git repo using ```git clone https://github.com/ethandadev/dragonweb```
+
 2. open a terminal tab is the dragonweb folder
 
 3. ```npm init```
