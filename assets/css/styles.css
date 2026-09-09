@@ -164,3 +164,55 @@ section {
 .sub-subtitle {
     text-align: center;
 }
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+  background-color: #222222;
+  padding: var(--space-sm) var(--space-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.navbar a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  opacity: 0.85;
+  transition: opacity var(--transition);
+}
+
+.navbar a:hover {
+  opacity: 1;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  opacity: 1;
+}
+
+.navbar-logo img {
+  height: 28px;
+  width: auto;
+  display: block;
+}
+
+.navbar.navbar-scroll {
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-100%);
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar.navbar-scroll.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
