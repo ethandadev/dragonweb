@@ -1,21 +1,44 @@
 <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Dragon Web</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="/assets/css/styles.css" />
-    </head>
-    <body>
-        <script src="/assets/js/main.js"></script>
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Dragon Web</h1>
-                <p>A place for all HKIS studets to connect online.</p>
-                <button class="cta-button">Get Started</button>
-            </div>
-            </section>
-        </body>
-    </html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dragon Web</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <link rel="icon" href="/assets/images/dragonweb_icon.png">
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Dragon Web</h1>
+            <p>A place for all HKIS students to connect online.</p>
+            <button class="cta-button" onclick="document.getElementById('target-section1').scrollIntoView({ behavior: 'smooth' });">Get Started</button>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="title">The Dragon Web is a place for HKIS students to connect.</h2>
+        <p class="subtitle">This website is <strong>100%</strong> student-run!</p>
+        <h3 class="sub-subtitle">Find a place to get started below!</h3>
+        <div class="card-grid" id="target-section1">
+            <a href="announcements.html" class="card">
+                <h3>Announcements</h3>
+                <p>Student Announcements</p>
+            </a>
+            <a href="#" class="card">
+                <h3>Forums</h3>
+                <p>A place where students can share their work</p>
+            </a>
+            <a href="#" class="card">
+                <h3>School Stuff</h3>
+                <p>Find stuff about school here.</p>
+            </a>
+        </div>
+    </section>
+
+    <script src="/assets/js/main.js" defer></script>
+</body>
+</html>
