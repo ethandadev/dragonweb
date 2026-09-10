@@ -7,9 +7,9 @@
   --color-accent: #4f46e5;
   --color-accent-hover: #3730a3;
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 24px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
 
   --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -28,7 +28,7 @@
 }
 
 html {
-  background-color: #61ff61;
+  background-color: #ffffff;
   scroll-behavior: smooth;
 }
 
@@ -107,6 +107,7 @@ section {
 }
 
 .cta-button {
+  display: inline-block;
   background-color: var(--color-accent);
   color: var(--color-bg);
   border: none;
@@ -115,6 +116,7 @@ section {
   font-weight: bold;
   border-radius: var(--radius-sm);
   cursor: pointer;
+  text-decoration: none;
   transition: background-color var(--transition);
 }
 
@@ -128,6 +130,7 @@ section {
   gap: var(--space-sm);
   max-width: 60rem;
   margin: 0 auto;
+  scroll-margin-top: 5rem;
 }
 
 .card {
@@ -167,9 +170,10 @@ section {
 
 .navbar {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm) var(--space-md);
   width: 100%;
   background-color: #222222;
   padding: var(--space-sm) var(--space-md);
@@ -181,6 +185,7 @@ section {
   text-decoration: none;
   font-weight: 700;
   font-size: 0.95rem;
+  white-space: nowrap;
   opacity: 0.85;
   transition: opacity var(--transition);
 }
@@ -215,4 +220,151 @@ section {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+.about {
+  background-color: var(--color-surface);
+}
+
+.about .title {
+  margin-top: 0;
+}
+
+.about .subtitle {
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.site-footer {
+  text-align: center;
+  padding: var(--space-md) var(--space-sm);
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.site-footer p {
+  margin: 0.25rem 0;
+}
+
+.site-footer a {
+  color: var(--color-accent);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.navbar-auth {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-left: auto;
+}
+
+.nav-btn {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: inherit;
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  opacity: 1;
+  transition: background-color var(--transition);
+}
+
+.nav-btn:hover {
+  background-color: var(--color-accent-hover);
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.auth-section {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-sm);
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 24rem;
+  background-color: var(--color-bg);
+  padding: var(--space-lg) var(--space-md);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-title {
+  margin-top: 0;
+}
+
+.form-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-heading);
+  margin: var(--space-sm) 0 var(--space-xs) 0;
+}
+
+.form-input {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #d5d5d5;
+  border-radius: var(--radius-sm);
+}
+
+.form-input:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.form-error {
+  background-color: #fdecea;
+  color: #b3261e;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.75rem;
+  font-size: 0.9rem;
+}
+
+.auth-submit {
+  margin-top: var(--space-md);
+  width: 100%;
+}
+
+.auth-switch {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin: var(--space-md) 0 0 0;
+}
+
+.auth-switch a {
+  color: var(--color-accent);
 }

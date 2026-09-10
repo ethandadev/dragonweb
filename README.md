@@ -12,7 +12,7 @@ get ready for development
 
 3. ```npm init``` (just spam enter u dont care abt the entries)
 
-4. ```npm install express```
+4. ```npm install``` (installs express, express-session, everything listed in package.json)
 
 5. ```npm run start```
 

@@ -17,6 +17,15 @@
         <a href="announcements.html">Announcements</a>
         <a href="forums.html">Forums</a>
         <a href="studentstuff.html">Student Stuff</a>
+        <div class="navbar-auth">
+            <div id="user-profile" class="profile-container hidden">
+                <span id="avatar-img" class="avatar"></span>
+                <span id="user-greeting"></span>
+            </div>
+
+            <a id="login-link" href="login.html" class="nav-btn">Login / Sign Up</a>
+            <button id="logout-btn" class="nav-btn hidden" onclick="logout()">Logout</button>
+        </div>
     </nav>
 
     <h1 class="title">This is the forums page</h1>
@@ -24,6 +33,7 @@
 
     <a class="title" href="index.html">Go Back</a>
 
+    <script src="/assets/js/auth.js" defer></script>
     <script src="/assets/js/main.js" defer></script>
 </body>
 </html>

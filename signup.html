@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dragon Web | Sign Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <link rel="icon" href="/assets/images/dragonweb_icon.png">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-logo"><img src="/assets/images/dragonweb_icon.png" alt="Dragon Web Home"></a>
+        <a href="announcements.html">Announcements</a>
+        <a href="forums.html">Forums</a>
+        <a href="studentstuff.html">Student Stuff</a>
+        <div class="navbar-auth">
+            <div id="user-profile" class="profile-container hidden">
+                <span id="avatar-img" class="avatar"></span>
+                <span id="user-greeting"></span>
+            </div>
+
+            <a id="login-link" href="login.html" class="nav-btn">Login / Sign Up</a>
+            <button id="logout-btn" class="nav-btn hidden" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <section class="auth-section">
+        <form class="auth-card" id="signup-form">
+            <h1 class="title auth-title">Create an acccount</h1>
+            <p class="subtitle">Join Dragon Web with your name, email, and password.</p>
+
+            <p class="form-error hidden" id="error-message"></p>
+
+            <label class="form-label" for="name">Name</label>
+            <input class="form-input" type="text" id="name" name="name" required autocomplete="name">
+
+            <label class="form-label" for="email">Email</label>
+            <input class="form-input" type="email" id="email" name="email" required autocomplete="email">
+
+            <label class="form-label" for="password">Password</label>
+            <input class="form-input" type="password" id="password" name="password" required minlength="6" autocomplete="new-password">
+
+            <label class="form-label" for="confirm-password">Confirm Password</label>
+            <input class="form-input" type="password" id="confirm-password" name="confirm-password" required minlength="6" autocomplete="new-password">
+
+            <button class="cta-button auth-submit" type="submit">Sign Up</button>
+
+            <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
+        </form>
+    </section>
+
+    <script src="/assets/js/auth.js" defer></script>
+    <script src="/assets/js/signup.js" defer></script>
+</body>
+</html>

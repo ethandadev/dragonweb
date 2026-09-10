@@ -16,13 +16,23 @@
         <a href="announcements.html">Announcements</a>
         <a href="forums.html">Forums</a>
         <a href="studentstuff.html">Student Stuff</a>
+        <div class="navbar-auth">
+            <div id="user-profile" class="profile-container hidden">
+                <span id="avatar-img" class="avatar"></span>
+                <span id="user-greeting"></span>
+            </div>
+
+            <a id="login-link" href="login.html" class="nav-btn">Login / Sign Up</a>
+            <button id="logout-btn" class="nav-btn hidden" onclick="logout()">Logout</button>
+        </div>
+
     </nav>
     <section class="hero">
         <div class="hero-content">
             <img src="assets/images/HKIS-Dragon-Body-Landscape-Blue.png" width="400" height="auto">
             <h1>Dragon Web</h1>
             <p>A place for all HKIS students to connect online.</p>
-            <button class="cta-button" onclick="document.getElementById('target-section1').scrollIntoView({ behavior: 'smooth' });">Get Started</button>
+            <a class="cta-button" href="#target-section1">Get Started</a>
         </div>
     </section>
 
@@ -46,6 +56,21 @@
         </div>
     </section>
 
+    <section class="about">
+        <h2 class="title">What is Dragon Web?</h2>
+        <p class="subtitle">
+            Dragon Web place built entirely by HKIS Students, for HKIS students. 
+            It's a place for everyone to connect, share creations with everyone,
+             catch up on some announcements, this is the place.
+        </p>
+    </section>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 Dragon Web. Built by HKIS Middle School SDLT</p>
+        <p><a href="mailto:ethandadev@gmail.com">Contact / Suggest something</a></p>
+    </footer>
+
+    <script src="/assets/js/auth.js" defer></script>
     <script src="/assets/js/navbar.js" defer></script>
 </body>
 </html>

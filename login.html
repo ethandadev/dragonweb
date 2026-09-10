@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dragon Web | Announcements</title>
+    <title>Dragon Web | Login</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/styles.css" />
-    <link rel="stylesheet" href="/assets/css/announcements.css" />
     <link rel="icon" href="/assets/images/dragonweb_icon.png">
 </head>
 <body>
@@ -28,12 +27,26 @@
         </div>
     </nav>
 
-    <h1 class="title">This is the announcements page</h1>
-    <p class="subtitle">WORK IN PROGRESS...</p>
+    <section class="auth-section">
+        <form class="auth-card" id="login-form">
+            <h1 class="title auth-title">Welcome back</h1>
+            <p class="subtitle">Log in to your Dragon Web account.</p>
 
-    <a class="title" href="index.html">Go Back</a>
+            <p class="form-error hidden" id="error-message"></p>
+
+            <label class="form-label" for="email">Email</label>
+            <input class="form-input" type="email" id="email" name="email" required autocomplete="email">
+
+            <label class="form-label" for="password">Password</label>
+            <input class="form-input" type="password" id="password" name="password" required autocomplete="current-password">
+
+            <button class="cta-button auth-submit" type="submit">Log In</button>
+
+            <p class="auth-switch">Don't have an account? <a href="signup.html">Sign up</a></p>
+        </form>
+    </section>
 
     <script src="/assets/js/auth.js" defer></script>
-    <script src="/assets/js/main.js" defer></script>
+    <script src="/assets/js/login.js" defer></script>
 </body>
 </html>
