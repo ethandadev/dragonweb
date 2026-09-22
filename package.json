@@ -1,24 +1,24 @@
 {
   "name": "dragonweb",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+  "description": "get ready for development",
+  "keywords": [],
+  "homepage": "https://github.com/ethandadev/dragonweb#readme",
+  "bugs": {
+    "url": "https://github.com/ethandadev/dragonweb/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ethandadev/dragonweb.git"
   },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
+  "author": "",
   "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/ethandadev/dragonweb/issues"
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
-  "homepage": "https://github.com/ethandadev/dragonweb#readme",
   "dependencies": {
     "express": "^5.2.1",
     "express-session": "^1.19.0"
