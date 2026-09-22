@@ -40,12 +40,10 @@ body {
 }
 
 .title {
-  font-size: 1.8rem;
+  font-size: 3rem;
   font-weight: 700;
   color: var(--color-heading);
-  text-align: center;
   max-width: 40rem;
-  margin: 0 auto var(--space-xs) auto;
   margin-top: 5rem;
 }
 
@@ -54,4 +52,48 @@ body {
   font-size: 1rem;
   text-align: center;
   margin: 0 auto var(--space-md) auto;
+}
+
+.announcement-message-title {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--color-heading);
+  max-width: 40rem;
+  margin-top: 5rem;
+
+}
+
+#announcementscards {
+  max-width: 40rem;
+  margin: var(--space-md) auto var(--space-xl) auto;
+  padding: 0 var(--space-sm);
+}
+
+.announcement-card {
+  background-color: var(--color-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.announcement-card .announcement-message-title {
+  margin: var(--space-sm) 0 var(--space-xs) 0;
+  font-weight: 700;
+}
+
+.announcement-card .announcement-message-content {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.announcement-date {
+  margin-left: auto;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.announcements-empty {
+  color: var(--color-text-muted);
+  text-align: center;
 }
