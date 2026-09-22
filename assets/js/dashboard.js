@@ -9,14 +9,22 @@ function row(main, sub, extra) {
   const r = document.createElement('div');
   r.className = 'dash-row';
   const text = document.createElement('div');
+  text.className = 'dash-row-text';
   const strong = document.createElement('strong');
   strong.textContent = main;
   const small = document.createElement('small');
-  small.textContent = ' ' + sub;
+  small.textContent = sub;
   text.append(strong, small);
   r.append(text);
   if (extra) r.append(extra);
   return r;
+}
+
+function empty(msg) {
+  const p = document.createElement('p');
+  p.className = 'dash-empty';
+  p.textContent = msg;
+  return p;
 }
 
 async function loadStats() {
@@ -30,7 +38,10 @@ async function loadStats() {
 
   const users = $('recent-users');
   users.replaceChildren();
-  if (!s.recentUsers.length) users.textContent = 'No users yet.';
+  if (!s.recentUsers.length) {
+    users.append(empty('No users yet.'));
+    return;
+  }
   s.recentUsers.forEach((u) =>
     users.append(row(u.name, `${u.email} · ${new Date(u.createdAt).toLocaleDateString()}`))
   );
@@ -40,7 +51,10 @@ async function loadAnnouncements() {
   const list = await (await fetch('/api/announcements')).json();
   const box = $('announce-list');
   box.replaceChildren();
-  if (!list.length) box.textContent = 'Nothing posted yet.';
+  if (!list.length) {
+    box.append(empty('Nothing posted yet.'));
+    return;
+  }
   list.forEach((a) => {
     const del = document.createElement('button');
     del.className = 'dash-delete';
