@@ -28,12 +28,35 @@
         </div>
     </nav>
 
-    <h1 class="title">This is the Forums Page</h1>
-    <p class="subtitle">WORK IN PROGRESS...</p>
+    <!-- Updated Forum Section -->
+    <main style="max-width: 800px; margin: 0 auto; padding: 20px;">
+        <h1 class="title">Dragon Web Forums</h1>
+        <p class="subtitle" style="text-align: center;">See what other students are talking about.</p>
 
-    <a class="title" href="index.html">Go Back</a>
+        <!-- Form for creating a new post -->
+        <div class="create-post-section" style="text-align: center; margin-bottom: 30px;">
+            <button id="show-post-form-btn" class="nav-btn">Create New Post</button>
+            
+            <form id="new-post-form" class="hidden" style="margin-top: 15px; text-align: left;">
+                <input type="text" id="post-title" placeholder="Discussion Title" required style="display: block; width: 100%; margin-bottom: 10px; padding: 10px; font-family: inherit;">
+                <textarea id="post-content" placeholder="What's on your mind?" required style="display: block; width: 100%; margin-bottom: 10px; padding: 10px; min-height: 100px; font-family: inherit; resize: vertical;"></textarea>
+                <button type="submit" class="nav-btn">Post</button>
+            </form>
+        </div>
+
+        <!-- Container where JavaScript will load the posts -->
+        <div id="forum-posts-container" class="forum-feed">
+            <p style="text-align: center;">Loading posts...</p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a class="nav-btn" href="index.html" style="text-decoration: none;">Go Back Home</a>
+        </div>
+    </main>
 
     <script src="/assets/js/auth.js" defer></script>
     <script src="/assets/js/main.js" defer></script>
+    <!-- New script specifically for forum logic -->
+    <script src="/assets/js/forums.js" defer></script>
 </body>
 </html>
