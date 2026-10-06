@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Dragon Web | Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <link rel="stylesheet" href="/assets/css/dashboard.css" />
+    <link rel="icon" href="/assets/images/dragonweb_icon.png">
+</head>
+<body class="dash-body">
+    <!-- Login -->
+    <section class="auth-section" id="login-section">
+        <form class="auth-card" id="admin-login-form">
+            <img class="dash-logo" src="/assets/images/dragonweb_icon.png" alt="">
+            <h1 class="title auth-title">Admin</h1>
+            <p class="subtitle">Sign in to the Dragon Web dashboard.</p>
+            <p class="form-error hidden" id="login-error"></p>
+
+            <label class="form-label" for="username">Username</label>
+            <input class="form-input" type="text" id="username" required autocomplete="username">
+
+            <label class="form-label" for="password">Password</label>
+            <input class="form-input" type="password" id="password" required autocomplete="current-password">
+
+            <button class="cta-button auth-submit" type="submit">Log In</button>
+        </form>
+    </section>
+
+    <!-- Dashboard -->
+    <main class="dash hidden" id="dash-section">
+        <header class="dash-header">
+            <div class="dash-header-title">
+                <img class="dash-logo dash-logo-sm" src="/assets/images/dragonweb_icon.png" alt="">
+                <h1>Dashboard</h1>
+            </div>
+            <button class="nav-btn dash-logout-btn" id="admin-logout">Logout</button>
+        </header>
+
+        <section class="stat-grid">
+            <div class="stat">
+                <span class="stat-icon">👤</span>
+                <span class="stat-num" id="stat-users">–</span>
+                <span class="stat-label">Total users</span>
+            </div>
+            <div class="stat">
+                <span class="stat-icon">✨</span>
+                <span class="stat-num" id="stat-new">–</span>
+                <span class="stat-label">New this week</span>
+            </div>
+            <div class="stat">
+                <span class="stat-icon">📣</span>
+                <span class="stat-num" id="stat-ann">–</span>
+                <span class="stat-label">Announcements</span>
+            </div>
+            <div class="stat">
+                <span class="stat-icon">👀</span>
+                <span class="stat-num" id="stat-views">–</span>
+                <span class="stat-label">Announcement page views</span>
+            </div>
+        </section>
+
+        <div class="dash-columns">
+            <section class="dash-panel">
+                <h2>New announcement</h2>
+                <form id="announce-form">
+                    <p class="form-error hidden" id="announce-error"></p>
+                    <label class="form-label" for="a-title">Title</label>
+                    <input class="form-input" id="a-title" maxlength="120" required>
+                    <label class="form-label" for="a-author">Posted as</label>
+                    <input class="form-input" id="a-author" maxlength="60" value="Admin">
+                    <label class="form-label" for="a-content">Message</label>
+                    <textarea class="form-input" id="a-content" rows="4" maxlength="2000" required></textarea>
+                    <button class="cta-button auth-submit" type="submit">Post announcement</button>
+                </form>
+            </section>
+
+            <section class="dash-panel">
+                <h2>Latest sign-ups</h2>
+                <div id="recent-users" class="dash-list"></div>
+            </section>
+        </div>
+
+        <section class="dash-panel">
+            <h2>Posted announcements</h2>
+            <div id="announce-list" class="dash-list"></div>
+        </section>
+    </main>
+
+    <script src="/assets/js/dashboard.js" defer></script>
+</body>
+</html>
