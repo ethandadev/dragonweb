@@ -25,38 +25,84 @@
 
             <a id="login-link" href="login.html" class="nav-btn">Login / Sign Up</a>
             <button id="logout-btn" class="nav-btn hidden" onclick="logout()">Logout</button>
-        </div>
+        </div>f
     </nav>
 
-    <!-- Updated Forum Section -->
-    <main style="max-width: 800px; margin: 0 auto; padding: 20px;">
-        <h1 class="title">Dragon Web Forums</h1>
-        <p class="subtitle" style="text-align: center;">See what other students are talking about.</p>
+    <main class="forum-page">
+        <header class="forum-hero">
+            <h1 class="title">Dragon Web Forums</h1>
+            <p class="subtitle">See what other students are talking about.</p>
+            <p id="create-post-prompt" class="forum-prompt">Loading your account...</p>
+        </header>
 
-        <!-- Form for creating a new post -->
-        <div class="create-post-section" style="text-align: center; margin-bottom: 30px;">
-            <button id="show-post-form-btn" class="nav-btn">Create New Post</button>
-            
-            <form id="new-post-form" class="hidden" style="margin-top: 15px; text-align: left;">
-                <input type="text" id="post-title" placeholder="Discussion Title" required style="display: block; width: 100%; margin-bottom: 10px; padding: 10px; font-family: inherit;">
-                <textarea id="post-content" placeholder="What's on your mind?" required style="display: block; width: 100%; margin-bottom: 10px; padding: 10px; min-height: 100px; font-family: inherit; resize: vertical;"></textarea>
-                <button type="submit" class="nav-btn">Post</button>
+        <section id="post-form-guard" class="composer hidden" aria-labelledby="composer-title">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">Start a discussion</p>
+                    <h2 id="composer-title">Create a new post</h2>
+                </div>
+                <button id="show-post-form-btn" class="nav-btn" type="button">Create New Post</button>
+            </div>
+
+            <form id="new-post-form" class="composer-form hidden">
+                <label for="post-title">Discussion title</label>
+                <input id="post-title" class="form-input" type="text" maxlength="120" placeholder="What would you like to discuss?" required>
+
+                <label for="post-content">Your message</label>
+                <textarea id="post-content" class="form-input" rows="6" maxlength="2000" placeholder="Share your thoughts, questions, or updates..." required></textarea>
+
+                <label for="post-category">Topic</label>
+                <select id="post-category" class="form-input">
+                    <option>General</option>
+                    <option>Academic</option>
+                    <option>Student Life</option>
+                    <option>Events</option>
+                    <option>Help</option>
+                </select>
+
+                <label for="post-media">Add an image or video <span class="optional-label">Optional</span></label>
+                <input id="post-media" class="file-input" type="file" accept="image/*,video/*">
+                <p id="media-preview" class="media-preview hidden" aria-live="polite"></p>
+
+                <button type="submit" class="nav-btn">Publish post</button>
             </form>
+        </section>
+
+        <section class="forum-controls" aria-label="Forum controls">
+            <div class="search-field">
+                <label for="forum-search">Search discussions</label>
+                <input id="forum-search" class="form-input" type="search" placeholder="Search titles, messages, or authors...">
+            </div>
+            <div class="filter-row">
+                <div class="category-filters" aria-label="Filter by category">
+                    <button class="category-filter active" type="button" data-category="All">All</button>
+                    <button class="category-filter" type="button" data-category="General">General</button>
+                    <button class="category-filter" type="button" data-category="Academic">Academic</button>
+                    <button class="category-filter" type="button" data-category="Student Life">Student Life</button>
+                    <button class="category-filter" type="button" data-category="Events">Events</button>
+                    <button class="category-filter" type="button" data-category="Help">Help</button>
+                </div>
+                <label class="sort-control" for="forum-sort">
+                    Sort by
+                    <select id="forum-sort" class="form-input">
+                        <option value="newest">Newest</option>
+                        <option value="popular">Most replies</option>
+                    </select>
+                </label>
+            </div>
+        </section>
+
+        <p id="auth-notice" class="form-message hidden" role="status"></p>
+        <div id="forum-posts-container" class="forum-feed" aria-live="polite">
+            <p class="loading-state">Loading discussions...</p>
         </div>
 
-        <!-- Container where JavaScript will load the posts -->
-        <div id="forum-posts-container" class="forum-feed">
-            <p style="text-align: center;">Loading posts...</p>
-        </div>
-        
-        <div style="text-align: center; margin-top: 40px;">
-            <a class="nav-btn" href="index.html" style="text-decoration: none;">Go Back Home</a>
+        <div class="forum-footer">
+            <a class="nav-btn" href="index.html">Go Back Home</a>
         </div>
     </main>
 
     <script src="/assets/js/auth.js" defer></script>
-    <script src="/assets/js/main.js" defer></script>
-    <!-- New script specifically for forum logic -->
     <script src="/assets/js/forums.js" defer></script>
 </body>
 </html>

@@ -35,6 +35,7 @@ async function loadStats() {
   $('stat-new').textContent = s.newUsersThisWeek;
   $('stat-ann').textContent = s.totalAnnouncements;
   $('stat-views').textContent = s.announcementViews;
+  $('stat-posts').textContent = s.totalPosts;
 
   const users = $('recent-users');
   users.replaceChildren();
@@ -68,9 +69,34 @@ async function loadAnnouncements() {
   });
 }
 
+async function loadPosts() {
+  const response = await fetch('/api/admin/posts');
+  if (!response.ok) return showLogin();
+  const posts = await response.json();
+  const list = $('post-list');
+  list.replaceChildren();
+  if (!posts.length) {
+    list.append(empty('No forum posts yet.'));
+    return;
+  }
+
+  posts.forEach((post) => {
+    const deleteButton = document.createElement('button');
+    deleteButton.className = 'dash-delete';
+    deleteButton.textContent = 'Delete post';
+    deleteButton.onclick = async () => {
+      if (!confirm(`Delete “${post.title}” and all of its replies?`)) return;
+      const result = await fetch(`/api/admin/posts/${post.id}`, { method: 'DELETE' });
+      if (result.ok) refresh();
+    };
+    list.append(row(post.title, `${post.author.name} · ${post.category} · ${post.replies.length} replies`, deleteButton));
+  });
+}
+
 function refresh() {
   loadStats();
   loadAnnouncements();
+  loadPosts();
 }
 
 function showDash() {
