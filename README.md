@@ -1,34 +1,56 @@
 # dragonweb
 
-get ready for development
+A place for all HKIS students to connect online.
 
-1. install node from https://nodejs.org
+## Getting started
 
-2. get git from https://git-scm.com/install/mac
+1. Install Node from https://nodejs.org
+2. Install git from https://git-scm.com/install/mac
+3. Clone the repo: `git clone https://github.com/ethandadev/dragonweb`
+4. Open a terminal in the `dragonweb` folder
+5. `npm install` (installs express, express-session, and everything else in package.json)
+6. `npm start`
 
-3. clone the git repo using ```git clone https://github.com/ethandadev/dragonweb```
+Now open http://localhost:3000 in your browser and you shall see the website.
 
-2. open a terminal tab is the dragonweb folder
+## Pages
 
-3. ```npm init``` (just spam enter u dont care abt the entries)
+| Page | What it is |
+| --- | --- |
+| `index.html` | Home page |
+| `announcements.html` | Announcements posted from the dashboard |
+| `forums.html` | Student forum (log in to post and reply) |
+| `studentstuff.html` | Daily schedule. Edit `assets/js/schedule.js` to add or change cycle days |
+| `login.html` / `signup.html` | Student accounts |
+| `dashboard.html` | Admin dashboard (post announcements, moderate the forum) |
 
-4. ```npm install``` (installs express, express-session, everything listed in package.json)
+Data (users, posts, announcements) is saved as JSON in the `data/` folder, which is not committed to git.
 
-5. ```npm run start```
+## Settings
 
-now open https://localhost:3000 in your browser
+These can be set as environment variables when starting the server:
 
-you shall see the website.
+- `PORT`: port to run on (default `3000`)
+- `ADMIN_USER` / `ADMIN_PASS`: dashboard login (default `admin` / `admin123`, **change this on the live site**)
+- `SESSION_SECRET`: secret used to sign login cookies
+- `ADMIN_EMAILS`: comma-separated student emails that get admin powers in the forum
 
-if you want to push to github then do
-```git add .```
-then ```git commit -m "commit message, change this"```
-finally ```git push origin main```
+## Pushing your changes
 
-## Important
-before you start working you can sync other people's changes using:
-```git pull origin main```
-Also at any moment *git* might ask you to sign in so just sign into your github account it should open a browser.
+Before you start working, sync everyone else's changes:
 
+```
+git pull origin main
+```
 
-MSG me(ethandadev) when you want to reupload the changes to https://dragonweb.ethandadev.com
+Then, to upload your work:
+
+```
+git add .
+git commit -m "describe what you changed"
+git push origin main
+```
+
+At any moment git might ask you to sign in, so just sign into your GitHub account (it should open a browser).
+
+Message ethandadev when you want the changes uploaded to https://dragonweb.ethandadev.com

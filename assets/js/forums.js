@@ -4,6 +4,7 @@ const state = {
   category: 'All',
   search: '',
   sort: 'newest',
+  openReplies: new Set(),
 };
 
 const elements = {
@@ -75,6 +76,7 @@ function renderPost(post) {
     ? post.replies.map((reply) => renderReply(reply, post.id)).join('')
     : '<p class="empty-replies">No replies yet. Be the first to join in.</p>';
   const canDeletePost = state.user?.id === post.author.id || state.isAdmin;
+  const repliesOpen = state.openReplies.has(post.id);
   const media = post.mediaType?.startsWith('video/')
     ? `<video class="post-media" controls preload="metadata" src="${escapeHtml(post.media)}"></video>`
     : post.media
@@ -100,10 +102,10 @@ function renderPost(post) {
         <span>${post.replies.length} ${post.replies.length === 1 ? 'reply' : 'replies'}</span>
         <div class="post-actions">
           ${canDeletePost ? `<button class="delete-button" type="button" data-delete-post="${escapeHtml(post.id)}">Delete post</button>` : ''}
-          <button class="text-button reply-toggle" type="button" aria-expanded="false">View replies</button>
+          <button class="text-button reply-toggle" type="button" aria-expanded="${repliesOpen}">${repliesOpen ? 'Hide replies' : 'View replies'}</button>
         </div>
       </div>
-      <div class="replies hidden">
+      <div class="replies${repliesOpen ? '' : ' hidden'}">
         <div class="replies-list">${replies}</div>
         ${state.user ? `
           <form class="reply-form" data-reply-form="${escapeHtml(post.id)}">
@@ -310,11 +312,10 @@ function bindEvents() {
   elements.container.addEventListener('click', (event) => {
     const toggle = event.target.closest('.reply-toggle');
     if (toggle) {
-      const replies = toggle.closest('.forum-card').querySelector('.replies');
-      const isOpen = !replies.classList.contains('hidden');
-      replies.classList.toggle('hidden', isOpen);
-      toggle.setAttribute('aria-expanded', String(!isOpen));
-      toggle.textContent = isOpen ? 'View replies' : 'Hide replies';
+      const postId = toggle.closest('.forum-card').dataset.postId;
+      if (state.openReplies.has(postId)) state.openReplies.delete(postId);
+      else state.openReplies.add(postId);
+      renderPosts();
       return;
     }
 

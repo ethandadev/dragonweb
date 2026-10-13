@@ -7,7 +7,7 @@ function renderAnnouncement(a) {
   const avatar = document.createElement('span');
   avatar.className = 'avatar';
   avatar.textContent = a.author.trim().charAt(0).toUpperCase();
-  const author = document.createElement('a');
+  const author = document.createElement('strong');
   author.textContent = a.author;
   const date = document.createElement('span');
   date.className = 'announcement-date';

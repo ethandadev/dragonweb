@@ -49,7 +49,7 @@ async function loadStats() {
 }
 
 async function loadAnnouncements() {
-  const list = await (await fetch('/api/announcements')).json();
+  const list = await (await fetch('/api/admin/announcements')).json();
   const box = $('announce-list');
   box.replaceChildren();
   if (!list.length) {
