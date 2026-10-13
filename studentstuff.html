@@ -30,20 +30,25 @@
 
     <main class="schedule-page">
         <h1 class="title">Student Stuff</h1>
-        <p class="subtitle">G7/8 daily schedule</p>
+        <p class="subtitle" id="schedule-subtitle">Daily schedule</p>
+
+        <div class="grade-toggle" role="group" aria-label="Grade">
+            <button class="day-button" type="button" data-grade="6">Grade 6</button>
+            <button class="day-button" type="button" data-grade="78">Grade 7/8</button>
+        </div>
 
         <section class="schedule-group">
             <div class="schedule-nav">
-                <button class="day-button" id="prev-day" type="button" aria-label="Previous school day">‹</button>
+                <button class="day-button nav-arrow" id="prev-day" type="button" aria-label="Previous school day">‹</button>
                 <div>
                     <h2 class="schedule-title" id="schedule-date"></h2>
                     <p class="schedule-day" id="schedule-day"></p>
                 </div>
-                <button class="day-button" id="next-day" type="button" aria-label="Next school day">›</button>
+                <button class="day-button nav-arrow" id="next-day" type="button" aria-label="Next school day">›</button>
             </div>
             <ul class="schedule-list" id="schedule-list"></ul>
-            <p class="schedule-note">First bus leaves 15:15 · Late buses 16:20 &amp; 17:00</p>
-            <button class="day-button today-button" id="today-day" type="button">Back to today</button>
+            <p class="schedule-note">First bus leaves 3:15 · Late buses 4:20 &amp; 5:00</p>
+            <button class="day-button today-button hidden" id="today-day" type="button">Back to today</button>
         </section>
     </main>
 
