@@ -113,8 +113,16 @@ function grade6(date, day) {
 }
 
 const GRADES = {
-  6: { label: 'Grade 6', schedule: grade6 },
-  78: { label: 'Grade 7/8', schedule: grade78 },
+  6: {
+    label: 'Grade 6',
+    schedule: grade6,
+    blocks: ['Core A', 'Core B', 'Elective 1', 'Elective 2A', 'Elective 2B', 'Elective 3A', 'Elective 3B'],
+  },
+  78: {
+    label: 'Grade 7/8',
+    schedule: grade78,
+    blocks: ['Core A', 'Core B', 'Core C', 'Core D', 'Elective 1', 'Elective 2', 'Elective 3', 'Elective 4'],
+  },
 };
 
 // --- Date helpers (all in local time) ---
@@ -187,6 +195,8 @@ const state = {
   viewing: defaultDay(),
   grade: '78',
   user: null,
+  classes: {}, // block -> the student's own class name, e.g. { 'Core A': 'Social Studies' }
+  editing: false,
 };
 
 function loadSavedGrade() {
@@ -202,6 +212,22 @@ function saveGrade(grade) {
     localStorage.setItem('dragonweb-grade', grade);
   } catch (err) {
     // Private mode etc. – the toggle still works for this visit.
+  }
+}
+
+function loadSavedClasses() {
+  try {
+    return JSON.parse(localStorage.getItem('dragonweb-classes')) || {};
+  } catch (err) {
+    return {};
+  }
+}
+
+function saveClassesLocally(classes) {
+  try {
+    localStorage.setItem('dragonweb-classes', JSON.stringify(classes));
+  } catch (err) {
+    // Not saved, but still shown for this visit.
   }
 }
 
@@ -242,13 +268,15 @@ function render() {
     if (/^(Core|Elective)/.test(name)) item.classList.add('class');
     if (isToday && nowMinutes >= toMinutes(start) && nowMinutes < toMinutes(end)) item.classList.add('now');
 
+    const className = state.classes[name];
     const text = document.createElement('div');
     const label = document.createElement('strong');
-    label.textContent = name;
+    label.textContent = className || name;
     text.append(label);
-    if (detail) {
+    const sub = [className && name, detail].filter(Boolean).join(' · ');
+    if (sub) {
       const small = document.createElement('small');
-      small.textContent = detail;
+      small.textContent = sub;
       text.append(small);
     }
     const time = document.createElement('span');
@@ -256,6 +284,84 @@ function render() {
     item.append(text, time);
     return item;
   }));
+
+  renderClassEditor();
+}
+
+function renderClassEditor() {
+  const form = document.getElementById('classes-form');
+  const toggle = document.getElementById('edit-classes');
+  form.classList.toggle('hidden', !state.editing);
+  toggle.classList.toggle('hidden', state.editing);
+  toggle.textContent = Object.keys(state.classes).length ? 'Edit my classes' : 'Add my classes';
+  document.getElementById('classes-hint').textContent = state.user
+    ? 'Saved to your account.'
+    : 'Saved on this device. Log in to keep them on your account.';
+  if (!state.editing) return;
+
+  const fields = document.getElementById('classes-fields');
+  if (fields.dataset.grade === state.grade) return; // keep what's being typed
+  fields.dataset.grade = state.grade;
+  fields.replaceChildren(...GRADES[state.grade].blocks.map((block) => {
+    const id = `class-${block.replace(/\s+/g, '-').toLowerCase()}`;
+    const label = document.createElement('label');
+    label.className = 'form-label';
+    label.htmlFor = id;
+    label.textContent = block;
+    const input = document.createElement('input');
+    input.className = 'form-input';
+    input.id = id;
+    input.name = block;
+    input.maxLength = 40;
+    input.placeholder = block.startsWith('Core') ? 'e.g. Math' : 'e.g. Art';
+    input.value = state.classes[block] || '';
+    return [label, input];
+  }).flat());
+}
+
+function openClassEditor() {
+  state.editing = true;
+  delete document.getElementById('classes-fields').dataset.grade;
+  render();
+  document.querySelector('#classes-fields input').focus();
+}
+
+function closeClassEditor() {
+  state.editing = false;
+  render();
+  document.getElementById('edit-classes').focus();
+}
+
+async function saveClasses(event) {
+  event.preventDefault();
+  const error = document.getElementById('classes-error');
+  error.classList.add('hidden');
+
+  const classes = { ...state.classes };
+  document.querySelectorAll('#classes-fields input').forEach((input) => {
+    const value = input.value.trim();
+    if (value) classes[input.name] = value;
+    else delete classes[input.name];
+  });
+
+  if (state.user) {
+    const res = await fetch('/api/me', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ classes }),
+    }).catch(() => null);
+    if (!res?.ok) {
+      error.textContent = (await res?.json().catch(() => null))?.error || 'Could not save. Try again.';
+      error.classList.remove('hidden');
+      return;
+    }
+    state.user = { ...state.user, ...(await res.json()) };
+  } else {
+    saveClassesLocally(classes);
+  }
+
+  state.classes = classes;
+  closeClassEditor();
 }
 
 async function setGrade(grade) {
@@ -294,9 +400,13 @@ async function initSchedule() {
   document.querySelectorAll('[data-grade]').forEach((button) => {
     button.addEventListener('click', () => setGrade(button.dataset.grade));
   });
+  document.getElementById('edit-classes').addEventListener('click', openClassEditor);
+  document.getElementById('cancel-classes').addEventListener('click', closeClassEditor);
+  document.getElementById('classes-form').addEventListener('submit', saveClasses);
 
   const saved = loadSavedGrade();
   if (GRADES[saved]) state.grade = saved;
+  state.classes = loadSavedClasses();
   render();
 
   try {
@@ -304,7 +414,23 @@ async function initSchedule() {
     if (res.ok) {
       state.user = await res.json();
       if (state.user.grade) state.grade = state.user.grade === 6 ? '6' : '78';
+      const local = state.classes;
+      state.classes = state.user.classes || {};
       render();
+
+      // Classes typed in before logging in move onto the account.
+      if (!Object.keys(state.classes).length && Object.keys(local).length) {
+        const saved = await fetch('/api/me', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ classes: local }),
+        });
+        if (saved.ok) {
+          state.user = await saved.json();
+          state.classes = state.user.classes;
+          render();
+        }
+      }
     }
   } catch (err) {
     // Offline or logged out – the saved/default grade is fine.

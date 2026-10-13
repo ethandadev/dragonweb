@@ -48,7 +48,21 @@
             </div>
             <ul class="schedule-list" id="schedule-list"></ul>
             <p class="schedule-note">First bus leaves 3:15 · Late buses 4:20 &amp; 5:00</p>
-            <button class="day-button today-button hidden" id="today-day" type="button">Back to today</button>
+            <div class="schedule-actions">
+                <button class="day-button hidden" id="today-day" type="button">Back to today</button>
+                <button class="day-button" id="edit-classes" type="button">Add my classes</button>
+            </div>
+
+            <form class="classes-form hidden" id="classes-form">
+                <h3>My classes</h3>
+                <p class="classes-hint" id="classes-hint"></p>
+                <p class="form-error hidden" id="classes-error"></p>
+                <div class="classes-fields" id="classes-fields"></div>
+                <div class="schedule-actions">
+                    <button class="day-button" id="cancel-classes" type="button">Cancel</button>
+                    <button class="nav-btn" type="submit">Save classes</button>
+                </div>
+            </form>
         </section>
     </main>
 

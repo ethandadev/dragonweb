@@ -72,12 +72,26 @@ function checkPassword(password, stored) {
 }
 
 function publicUser(user) {
-  return { id: user.id, name: user.name, email: user.email, grade: user.grade || null };
+  return { id: user.id, name: user.name, email: user.email, grade: user.grade || null, classes: user.classes || {} };
 }
 
 function parseGrade(value) {
   const grade = Number(value);
   return GRADES.includes(grade) ? grade : null;
+}
+
+// Students' own names for their schedule blocks, e.g. { "Core A": "Social Studies" }.
+const BLOCK_NAME = /^(Core [A-D]|Elective [1-4][AB]?)$/;
+
+function parseClasses(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+  const classes = {};
+  for (const [block, name] of Object.entries(value)) {
+    if (!BLOCK_NAME.test(block) || typeof name !== 'string') return null;
+    const trimmed = name.trim().slice(0, 40);
+    if (trimmed) classes[block] = trimmed;
+  }
+  return classes;
 }
 
 // --- Request helpers ---
@@ -206,14 +220,18 @@ app.get('/api/me', (req, res) => {
 });
 
 app.patch('/api/me', (req, res) => {
-  const grade = parseGrade(req.body?.grade);
-  if (!grade) return res.status(400).json({ error: 'Choose grade 6, 7, or 8.' });
+  const body = req.body || {};
+  const grade = 'grade' in body ? parseGrade(body.grade) : undefined;
+  const classes = 'classes' in body ? parseClasses(body.classes) : undefined;
+  if (grade === null) return res.status(400).json({ error: 'Choose grade 6, 7, or 8.' });
+  if (classes === null) return res.status(400).json({ error: 'Those class names could not be saved.' });
 
   const users = readUsers();
   const user = users.find((candidate) => candidate.id === req.session.userId);
   if (!user) return res.status(401).json({ error: 'Not logged in.' });
 
-  user.grade = grade;
+  if (grade !== undefined) user.grade = grade;
+  if (classes !== undefined) user.classes = classes;
   writeUsers(users);
   res.json(publicUser(user));
 });
