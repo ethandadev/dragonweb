@@ -22,6 +22,7 @@ const ADMIN_EMAILS = new Set(
     .filter(Boolean),
 );
 
+const GRADES = [6, 7, 8];
 const MAX_MEDIA_SIZE = 5 * 1024 * 1024;
 const MAX_VIDEO_SIZE = 15 * 1024 * 1024;
 
@@ -71,7 +72,26 @@ function checkPassword(password, stored) {
 }
 
 function publicUser(user) {
-  return { id: user.id, name: user.name, email: user.email };
+  return { id: user.id, name: user.name, email: user.email, grade: user.grade || null, classes: user.classes || {} };
+}
+
+function parseGrade(value) {
+  const grade = Number(value);
+  return GRADES.includes(grade) ? grade : null;
+}
+
+// Students' own names for their schedule blocks, e.g. { "Core A": "Social Studies" }.
+const BLOCK_NAME = /^(Core [A-D]|Elective [1-4][AB]?)$/;
+
+function parseClasses(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+  const classes = {};
+  for (const [block, name] of Object.entries(value)) {
+    if (!BLOCK_NAME.test(block) || typeof name !== 'string') return null;
+    const trimmed = name.trim().slice(0, 40);
+    if (trimmed) classes[block] = trimmed;
+  }
+  return classes;
 }
 
 // --- Request helpers ---
@@ -122,9 +142,13 @@ app.use(session({
 
 app.post('/api/signup', (req, res) => {
   const { name, email, password } = req.body || {};
+  const grade = parseGrade(req.body?.grade);
 
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Name, email, and password are required.' });
+  }
+  if (!grade) {
+    return res.status(400).json({ error: 'Choose your grade.' });
   }
   if (String(password).length < 6) {
     return res.status(400).json({ error: 'Password must be at least 6 characters.' });
@@ -141,6 +165,7 @@ app.post('/api/signup', (req, res) => {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2),
     name: String(name).trim().slice(0, 60),
     email: normalizedEmail,
+    grade,
     password: hashPassword(String(password)),
     createdAt: new Date().toISOString(),
   };
@@ -192,6 +217,23 @@ app.get('/api/me', (req, res) => {
   }
 
   res.json({ ...publicUser(user), role: user.role });
+});
+
+app.patch('/api/me', (req, res) => {
+  const body = req.body || {};
+  const grade = 'grade' in body ? parseGrade(body.grade) : undefined;
+  const classes = 'classes' in body ? parseClasses(body.classes) : undefined;
+  if (grade === null) return res.status(400).json({ error: 'Choose grade 6, 7, or 8.' });
+  if (classes === null) return res.status(400).json({ error: 'Those class names could not be saved.' });
+
+  const users = readUsers();
+  const user = users.find((candidate) => candidate.id === req.session.userId);
+  if (!user) return res.status(401).json({ error: 'Not logged in.' });
+
+  if (grade !== undefined) user.grade = grade;
+  if (classes !== undefined) user.classes = classes;
+  writeUsers(users);
+  res.json(publicUser(user));
 });
 
 // --- Forum API ---
@@ -340,7 +382,7 @@ app.get('/api/admin/stats', requireAdmin, (req, res) => {
     recentUsers: users
       .slice(-5)
       .reverse()
-      .map((u) => ({ name: u.name, email: u.email, createdAt: u.createdAt })),
+      .map((u) => ({ name: u.name, email: u.email, grade: u.grade || null, createdAt: u.createdAt })),
   });
 });
 

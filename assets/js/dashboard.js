@@ -44,7 +44,7 @@ async function loadStats() {
     return;
   }
   s.recentUsers.forEach((u) =>
-    users.append(row(u.name, `${u.email} · ${new Date(u.createdAt).toLocaleDateString()}`))
+    users.append(row(u.name, [u.email, u.grade && `Grade ${u.grade}`, new Date(u.createdAt).toLocaleDateString()].filter(Boolean).join(' · ')))
   );
 }
 

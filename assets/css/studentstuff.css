@@ -1,3 +1,74 @@
+.schedule-page {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-sm) 0;
+  text-align: center;
+}
+
+.schedule-page .title {
+  margin-top: 0;
+}
+
+.day-button {
+  border: 1px solid #d8d8d8;
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.day-button:hover:not(:disabled),
+.day-button.active {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+.day-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.nav-arrow {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.grade-toggle {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.schedule-group {
+  max-width: 30rem;
+  margin: 0 auto;
+  text-align: left;
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-md);
+}
+
+.schedule-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  text-align: center;
+}
+
 .schedule-title {
   margin: 0;
   font-size: 1.2rem;
@@ -18,9 +89,53 @@
   text-align: center;
 }
 
-.today-button {
-  display: block;
-  margin: var(--space-sm) auto 0;
+.schedule-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+}
+
+.classes-form {
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid #eeeeee;
+}
+
+.classes-form h3 {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 1rem;
+}
+
+.classes-hint {
+  margin: 0.2rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.classes-fields {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--space-xs) var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.classes-fields .form-label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.classes-fields .form-input {
+  width: 100%;
+  min-width: 0;
+  font-size: 0.95rem;
+}
+
+.classes-form .form-error {
+  margin: var(--space-xs) 0 0;
 }
 
 .schedule-list {
@@ -32,6 +147,7 @@
 .schedule-list li {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: var(--space-sm);
   padding: 0.55rem 0.75rem;
   border-radius: var(--radius-sm);
@@ -48,3 +164,33 @@
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
   font-size: 0.8rem;
+}
+
+.schedule-list li.passing strong {
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.schedule-list li > div {
+  min-width: 0;
+}
+
+.schedule-list li small {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.schedule-list li.class strong {
+  color: var(--color-accent);
+}
+
+.schedule-list li.break {
+  background: var(--color-surface);
+}
+
+.schedule-list li.now {
+  background: #ede9fe;
+  box-shadow: inset 4px 0 0 var(--color-accent);
+}
