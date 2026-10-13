@@ -52,7 +52,7 @@
   color: var(--color-heading);
 }
 
-.announcement-card .profile-container a {
+.announcement-card .profile-container strong {
   font-weight: 700;
 }
 

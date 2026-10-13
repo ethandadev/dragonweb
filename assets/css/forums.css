@@ -442,11 +442,6 @@
   color: var(--color-text-muted);
 }
 
-.forum-footer {
-  margin-top: 2rem;
-  text-align: center;
-}
-
 @media (max-width: 700px) {
   .forum-page {
     width: min(100% - 1rem, 880px);
