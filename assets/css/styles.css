@@ -66,10 +66,18 @@ body {
 
 .hero-content {
   background-color: var(--color-bg);
-  padding: var(--space-lg) var(--space-xl);
+  padding: var(--space-lg) clamp(var(--space-md), 6vw, var(--space-xl));
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   text-align: center;
+  max-width: min(640px, 100%);
+}
+
+.hero-logo {
+  display: block;
+  width: min(400px, 100%);
+  height: auto;
+  margin: 0 auto;
 }
 
 .hero-content h1 {
@@ -165,7 +173,7 @@ section {
 }
 
 .sub-subtitle {
-    text-align: center;
+  text-align: center;
 }
 
 .navbar {
@@ -273,6 +281,8 @@ section {
   white-space: nowrap;
   border-radius: var(--radius-sm);
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
   opacity: 1;
   transition: background-color var(--transition);
 }
@@ -367,4 +377,9 @@ section {
 
 .auth-switch a {
   color: var(--color-accent);
+}
+
+.page-back {
+  text-align: center;
+  margin: var(--space-md) 0 var(--space-xl);
 }
