@@ -1,6 +1,43 @@
 // Bell schedules for each day of the cycle. To add a day, copy one of the
 // entries below and change the periods. Times are 24-hour "HH:MM".
 const SCHEDULES = {
+  1: {
+    G6: [
+      ['PCG', '7:50', '7:55'],
+      ['Passing Time', '7:55', '8:00'],
+      ['Tuesday Club', '8:00', '8:25'],
+      ['Passing Time', '8:25', '8:30'],
+      ['Elective 1A', '8:30', '9:15'],
+      ['Elective 2A', '9:20', '10:05'],
+      ['Break', '10:05', '10:20'],
+      ['Passing Time', '10:20', '10:25'],
+      ['Elective 3A', '10:25', '11:10'],
+      ['Passing Time', '11:10', '11:15'],
+      ['Dyad', '11:15', '11:45'],
+      ['Lunch', '11:45', '12:25'],
+      ['Passing Time', '12:25', '12:30'],
+      ['Core A', '12:30', '13:40'],
+      ['Passing Time', '13:40', '13:50'],
+      ['Core B', '13:50', '15:00'],
+    ],
+    'G7/8': [
+      ['PCG', '7:50', '7:55'],
+      ['Passing Time', '7:55', '8:00'],
+      ['Tuesday Club', '8:00', '8:25'],
+      ['Passing Time', '8:25', '8:30'],
+      ['Core A', '8:30', '9:40'],
+      ['Break', '9:40', '9:55'],
+      ['Passing Time', '9:55', '10:00'],
+      ['Core B', '10:00', '11:10'],
+      ['Passing Time', '11:10', '11:15'],
+      ['AT: C', '11:15', '11:45'],
+      ['Lunch', '11:45', '12:25'],
+      ['Passing Time', '12:25', '12:30'],
+      ['Elective 1', '12:30', '13:40'],
+      ['Passing Time', '13:40', '13:50'],
+      ['Elective 2', '13:50', '15:00'],
+    ],
+  },
   3: {
     G6: [
       ['PCG', '7:50', '7:55'],
