@@ -9,14 +9,6 @@
   margin-top: 0;
 }
 
-.day-picker {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-md);
-}
-
 .day-button {
   border: 1px solid #d8d8d8;
   border-radius: 999px;
@@ -37,24 +29,48 @@
   color: #ffffff;
 }
 
-.schedule-groups {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-  gap: var(--space-md);
-  text-align: left;
-}
-
 .schedule-group {
+  max-width: 30rem;
+  margin: 0 auto;
+  text-align: left;
   background: var(--color-bg);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   padding: var(--space-md);
 }
 
+.schedule-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  text-align: center;
+}
+
 .schedule-title {
-  margin: 0 0 var(--space-sm);
+  margin: 0;
   font-size: 1.2rem;
   color: var(--color-heading);
+}
+
+.schedule-day {
+  margin: 0.2rem 0 0;
+  color: var(--color-accent);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.schedule-note {
+  margin: var(--space-sm) 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.today-button {
+  display: block;
+  margin: var(--space-sm) auto 0;
 }
 
 .schedule-list {
