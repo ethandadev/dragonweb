@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Snake - School Edition</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            background-color: #001524;
+            color: #ffffff;
+            font-family: 'Press Start 2P', monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+            text-shadow: 0 0 10px #aa272f;
+            text-align: center;
+        }
+
+        .arcade-cabinet {
+            background: #002a42;
+            padding: 20px;
+            border: 6px solid #aa272f;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(170, 39, 47, 0.3), inset 0 0 15px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        canvas {
+            background-color: #00101a;
+            display: block;
+            border: 4px solid #ffffff;
+            box-shadow: inset 0 0 20px rgba(0, 42, 66, 0.5);
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-between;
+            width: 400px;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+            color: #ffffff;
+        }
+
+        .instructions {
+            margin-top: 15px;
+            font-size: 0.55rem;
+            color: #cccccc;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* CRT Scanline effect */
+        .arcade-cabinet::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 20px; left: 20px; bottom: 20px; right: 20px;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 4px;
+            z-index: 10;
+            pointer-events: none;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>RETRO SNAKE</h1>
+    
+    <div class="arcade-cabinet">
+        <div class="scoreboard">
+            <div>SCORE: <span id="score">0</span></div>
+            <div>HIGH: <span id="highScore">0</span></div>
+        </div>
+        
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        
+        <div class="instructions">
+            Use <b>ARROW KEYS</b> or <b>W, A, S, D</b> to move.<br>
+            Press <b>SPACEBAR</b> to Restart / Pause.
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const gridSzie = 20;
+        const tileCount = canvas.width / gridSzie;
+
+        let snake = [
+            { x: 10, y: 10 },
+            { x: 9, y: 10 },
+            { x: 8, y: 10 }
+        ];
+        let food = { x: 5, y: 5 };
+        let dx = 1;
+        let dy = 0;
+        let score = 0;
+        let highScore = localStorage.getItem("snakeHighScore") || 0;
+        let gameInterval;
+        let isGameOver = false;
+        let changingDirection = false;
+
+        document.getElementById("highScore").innerText = highScore;
+
+        document.addEventListener("keydown", changeDirection);
+
+        function main() {
+            if (hasGameEnded()) {
+                isGameOver = true;
+                clearInterval(gameInterval);
+                drawGameOverScreen();
+                return;
+            }
+
+            changingDirection = false;
+            clearCanvas();
+            drawFood();
+            moveSnake();
+            drawSnake();
+        }
+
+        gameInterval = setInterval(main, 100);
+        generateFood();
+
+        function clearCanvas() {
+            ctx.fillStyle = "#00101a";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawSnake() {
+            snake.forEach((part, index) => {
+                // Head is white, body segments use the school dark blue/red scheme
+                ctx.fillStyle = index === 0 ? "#ffffff" : "#002a42";
+                ctx.strokeStyle = "#aa272f";
+                ctx.fillRect(part.x * gridSzie, part.y * gridSzie, gridSzie - 2, gridSzie - 2);
+                ctx.strokeRect(part.x * gridSzie, part.y * gridSzie, gridSzie - 2, gridSzie - 2);
+            });
+        }
+
+        function moveSnake() {
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+            snake.unshift(head);
+
+            const hasEatenFood = snake[0].x === food.x && snake[0].y === food.y;
+            if (hasEatenFood) {
+                score += 10;
+                document.getElementById("score").innerText = score;
+                if (score > highScore) {
+                    highScore = score;
+                    localStorage.setItem("snakeHighScore", highScore);
+                    document.getElementById("highScore").innerText = highScore;
+                }
+                generateFood();
+            } else {
+                snake.pop();
+            }
+        }
+
+        function generateFood() {
+            food.x = Math.floor(Math.random() * tileCount);
+            food.y = Math.floor(Math.random() * tileCount);
+
+            snake.forEach(part => {
+                const hasEaten = part.x === food.x && part.y === food.y;
+                if (hasEaten) generateFood();
+            });
+        }
+
+        function drawFood() {
+            // Food rendered in cardinal red
+            ctx.fillStyle = "#aa272f";
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = "#aa272f";
+            ctx.fillRect(food.x * gridSzie, food.y * gridSzie, gridSzie - 2, gridSzie - 2);
+            ctx.shadowBlur = 0;
+        }
+
+        function hasGameEnded() {
+            for (let i = 4; i < snake.length; i++) {
+                if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true;
+            }
+            const hitLeftWall = snake[0].x < 0;
+            const hitRightWall = snake[0].x >= tileCount;
+            const hitToptWall = snake[0].y < 0;
+            const hitBottomWall = snake[0].y >= tileCount;
+
+            return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall;
+        }
+
+        function changeDirection(event) {
+            const keyPressed = event.keyCode;
+            const LEFT = 37, UP = 38, RIGHT = 39, DOWN = 40;
+            const W = 87, A = 65, S = 83, D = 68;
+
+            if (keyPressed === 32) {
+                if (isGameOver) {
+                    resetGame();
+                }
+                return;
+            }
+
+            if (changingDirection) return;
+
+            const goingUp = dy === -1;
+            const goingDown = dy === 1;
+            const goingRight = dx === 1;
+            const goingLeft = dx === -1;
+
+            if ((keyPressed === LEFT || keyPressed === A) && !goingRight) {
+                dx = -1; dy = 0;
+                changingDirection = true;
+            }
+            if ((keyPressed === UP || keyPressed === W) && !goingDown) {
+                dx = 0; dy = -1;
+                changingDirection = true;
+            }
+            if ((keyPressed === RIGHT || keyPressed === D) && !goingLeft) {
+                dx = 1; dy = 0;
+                changingDirection = true;
+            }
+            if ((keyPressed === DOWN || keyPressed === S) && !goingUp) {
+                dx = 0; dy = 1;
+                changingDirection = true;
+            }
+        }
+
+        function drawGameOverScreen() {
+            ctx.fillStyle = "rgba(0, 16, 26, 0.9)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#aa272f";
+            ctx.font = "16px 'Press Start 2P'";
+            ctx.textAlign = "center";
+            ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 20);
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "8px 'Press Start 2P'";
+            ctx.fillText("PRESS SPACE TO RESTART", canvas.width / 2, canvas.height / 2 + 20);
+        }
+
+        function resetGame() {
+            snake = [
+                { x: 10, y: 10 },
+                { x: 9, y: 10 },
+                { x: 8, y: 10 }
+            ];
+            score = 0;
+            dx = 1;
+            dy = 0;
+            isGameOver = false;
+            document.getElementById("score").innerText = score;
+            generateFood();
+            clearInterval(gameInterval);
+            gameInterval = setInterval(main, 100);
+        }
+    </script>
+</body>
+</html>

@@ -70,6 +70,7 @@ body {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   text-align: center;
+  max-width: min(640px, 100%);
 }
 
 .hero-logo {

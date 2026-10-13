@@ -1,0 +1,54 @@
+<section class="poll-container">
+    <div class="poll-card">
+        <h2>📊 Poll of the Week</h2>
+        <p id="poll-question">What is the best spot to hang out on campus during lunch?</p>
+        
+        <!-- Voting Form -->
+        <form id="poll-form">
+            <label class="poll-option">
+                <input type="radio" name="poll-answer" value="0">
+                <span class="custom-radio"></span> The Courtyard Quad
+            </label>
+            <label class="poll-option">
+                <input type="radio" name="poll-answer" value="1">
+                <span class="custom-radio"></span> The Library / Media Center
+            </label>
+            <label class="poll-option">
+                <input type="radio" name="poll-answer" value="2">
+                <span class="custom-radio"></span> The Bleachers / Gym Area
+            </label>
+            <label class="poll-option">
+                <input type="radio" name="poll-answer" value="3">
+                <span class="custom-radio"></span> Cafeteria Annex
+            </label>
+            
+            <button type="submit" id="vote-btn">Submit Vote</button>
+        </form>
+
+        <!-- Results Display (Initially Hidden) -->
+        <div id="poll-results" class="hidden">
+            <h3>Thanks for voting! </h3>
+            <div class="result-bar-container">
+                <span class="result-label">The Courtyard Quad</span>
+                <div class="bar-bg"><div class="bar-fill" id="bar-0"></div></div>
+                <span class="result-pct" id="pct-0">0%</span>
+            </div>
+            <div class="result-bar-container">
+                <span class="result-label">The Library / Media Center</span>
+                <div class="bar-bg"><div class="bar-fill" id="bar-1"></div></div>
+                <span class="result-pct" id="pct-1">0%</span>
+            </div>
+            <div class="result-bar-container">
+                <span class="result-label">The Bleachers / Gym Area</span>
+                <div class="bar-bg"><div class="bar-fill" id="bar-2"></div></div>
+                <span class="result-pct" id="pct-2">0%</span>
+            </div>
+            <div class="result-bar-container">
+                <span class="result-label">Cafeteria Annex</span>
+                <div class="bar-bg"><div class="bar-fill" id="bar-3"></div></div>
+                <span class="result-pct" id="pct-3">0%</span>
+            </div>
+            <p id="total-votes" class="vote-count-text"></p>
+        </div>
+    </div>
+</section>
