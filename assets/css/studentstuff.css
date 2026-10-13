@@ -1,60 +1,26 @@
-.schedule-page {
-  max-width: 56rem;
-  margin: 0 auto;
-  padding: var(--space-lg) var(--space-sm) 0;
+.schedule-title {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--color-heading);
+}
+
+.schedule-day {
+  margin: 0.2rem 0 0;
+  color: var(--color-accent);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.schedule-note {
+  margin: var(--space-sm) 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
   text-align: center;
 }
 
-.schedule-page .title {
-  margin-top: 0;
-}
-
-.day-picker {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-md);
-}
-
-.day-button {
-  border: 1px solid #d8d8d8;
-  border-radius: 999px;
-  padding: 0.5rem 1rem;
-  background: var(--color-bg);
-  color: var(--color-text-muted);
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color var(--transition), color var(--transition);
-}
-
-.day-button:hover,
-.day-button.active {
-  border-color: var(--color-accent);
-  background: var(--color-accent);
-  color: #ffffff;
-}
-
-.schedule-groups {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-  gap: var(--space-md);
-  text-align: left;
-}
-
-.schedule-group {
-  background: var(--color-bg);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-md);
-}
-
-.schedule-title {
-  margin: 0 0 var(--space-sm);
-  font-size: 1.2rem;
-  color: var(--color-heading);
+.today-button {
+  display: block;
+  margin: var(--space-sm) auto 0;
 }
 
 .schedule-list {
@@ -82,14 +48,3 @@
   padding-top: 0.2rem;
   padding-bottom: 0.2rem;
   font-size: 0.8rem;
-}
-
-.schedule-list li.passing strong {
-  font-weight: 400;
-  color: var(--color-text-muted);
-}
-
-.schedule-list li.now {
-  background: #ede9fe;
-  box-shadow: inset 4px 0 0 var(--color-accent);
-}
