@@ -73,92 +73,6 @@ function grade6(date, day) {
       ['Elective 1', '8:30', '9:15', 'Period 1'],
       ['Passing Time', '9:15', '9:20'],
       [`Elective 2${track}`, '9:20', '10:05', 'Period 1'],
-// Bell schedules for each day of the cycle. To add a day, copy one of the
-// entries below and change the periods. Times are 24-hour "HH:MM".
-const SCHEDULES = {
-  1: {
-    G6: [
-      ['PCG', '7:50', '7:55'],
-      ['Passing Time', '7:55', '8:00'],
-      ['Tuesday Club', '8:00', '8:25'],
-      ['Passing Time', '8:25', '8:30'],
-      ['Elective 1A', '8:30', '9:15'],
-      ['Elective 2A', '9:20', '10:05'],
-      ['Break', '10:05', '10:20'],
-      ['Passing Time', '10:20', '10:25'],
-      ['Elective 3A', '10:25', '11:10'],
-      ['Passing Time', '11:10', '11:15'],
-      ['Dyad', '11:15', '11:45'],
-      ['Lunch', '11:45', '12:25'],
-      ['Passing Time', '12:25', '12:30'],
-      ['Core A', '12:30', '13:40'],
-      ['Passing Time', '13:40', '13:50'],
-      ['Core B', '13:50', '15:00'],
-    ],
-    'G7/8': [
-      ['PCG', '7:50', '7:55'],
-      ['Passing Time', '7:55', '8:00'],
-      ['Tuesday Club', '8:00', '8:25'],
-      ['Passing Time', '8:25', '8:30'],
-      ['Core A', '8:30', '9:40'],
-      ['Break', '9:40', '9:55'],
-      ['Passing Time', '9:55', '10:00'],
-      ['Core B', '10:00', '11:10'],
-      ['Passing Time', '11:10', '11:15'],
-      ['AT: C', '11:15', '11:45'],
-      ['Lunch', '11:45', '12:25'],
-      ['Passing Time', '12:25', '12:30'],
-      ['Elective 1', '12:30', '13:40'],
-      ['Passing Time', '13:40', '13:50'],
-      ['Elective 2', '13:50', '15:00'],
-    ],
-  },
-  2: {
-    G6: [
-      ['PCG', '7:50', '7:55'],
-      ['Passing Time', '7:55', '8:00'],
-      ['Tuesday Club', '8:00', '8:25'],
-      ['Passing Time', '8:25', '8:30'],
-      ['Elective 1A', '8:30', '9:15'],
-      ['Elective 2A', '9:20', '10:05'],
-      ['Break', '10:05', '10:20'],
-      ['Passing Time', '10:20', '10:25'],
-      ['Elective 3A', '10:25', '11:10'],
-      ['Passing Time', '11:10', '11:15'],
-      ['Dyad', '11:15', '11:45'],
-      ['Lunch', '11:45', '12:25'],
-      ['Passing Time', '12:25', '12:30'],
-      ['Core A', '12:30', '13:40'],
-      ['Passing Time', '13:40', '13:50'],
-      ['Core B', '13:50', '15:00'],
-    ],
-    'G7/8': [
-      ['PCG', '7:50', '7:55'],
-      ['Passing Time', '7:55', '8:00'],
-      ['Tuesday Club', '8:00', '8:25'],
-      ['Passing Time', '8:25', '8:30'],
-      ['Elective 3', '8:30', '9:40'],
-      ['Break', '9:40', '9:55'],
-      ['Passing Time', '9:55', '10:00'],
-      ['Elective 4', '10:00', '11:10'],
-      ['Passing Time', '11:10', '11:15'],
-      ['AT: A', '11:15', '11:45'],
-      ['Lunch', '11:45', '12:25'],
-      ['Passing Time', '12:25', '12:30'],
-      ['Core C', '12:30', '13:40'],
-      ['Passing Time', '13:40', '13:50'],
-      ['Core D', '13:50', '15:00'],
-    ],
-  },
-  
-  3: {
-    G6: [
-      ['PCG', '7:50', '7:55'],
-      ['Passing Time', '7:55', '8:00'],
-      ['Tuesday Club', '8:00', '8:25'],
-      ['Passing Time', '8:25', '8:30'],
-      ['Elective 1A', '8:30', '9:15'],
-      ['Elective 2A', '9:20', '10:05'],
       ['Break', '10:05', '10:20'],
       ['Passing Time', '10:20', '10:25'],
       [`Elective 3${track}`, '10:25', '11:10', 'Period 2'],
@@ -209,30 +123,6 @@ const GRADES = {
     schedule: grade78,
     blocks: ['Core A', 'Core B', 'Core C', 'Core D', 'Elective 1', 'Elective 2', 'Elective 3', 'Elective 4'],
   },
-}
-=======
-// G7/8 bell schedule on an 8-day cycle. The cycle moves forward one day for
-// every school day (weekends and NO_SCHOOL dates are skipped).
-
-// A known date and its cycle day; every other date is counted from here.
-const ANCHOR = { date: '2026-10-13', day: 8 };
-
-// Weekdays with no school (holidays, breaks). Add ranges as [first, last].
-const NO_SCHOOL = [
-  ['2026-10-19', '2026-10-23'],
-];
-
-// Which block meets in periods 1–4 on each cycle day.
-// Odd days are A days, even days are B days.
-const CYCLE = {
-  1: ['Core A', 'Core B', 'Elective 1', 'Elective 2'],
-  2: ['Elective 3', 'Elective 4', 'Core C', 'Core D'],
-  3: ['Core B', 'Core A', 'Elective 2', 'Elective 1'],
-  4: ['Elective 4', 'Elective 3', 'Core D', 'Core C'],
-  5: ['Elective 1', 'Elective 2', 'Core A', 'Core B'],
-  6: ['Core C', 'Core D', 'Elective 3', 'Elective 4'],
-  7: ['Elective 2', 'Elective 1', 'Core B', 'Core A'],
-  8: ['Core D', 'Core C', 'Elective 4', 'Elective 3'],
 };
 
 // --- Date helpers (all in local time) ---
@@ -380,6 +270,16 @@ function render() {
 
     const className = state.classes[name];
     const text = document.createElement('div');
+    const label = document.createElement('strong');
+    label.textContent = className || name;
+    text.append(label);
+    const sub = [className && name, detail].filter(Boolean).join(' · ');
+    if (sub) {
+      const small = document.createElement('small');
+      small.textContent = sub;
+      text.append(small);
+    }
+    const time = document.createElement('span');
     time.textContent = `${formatTime(start)} – ${formatTime(end)}`;
     item.append(text, time);
     return item;

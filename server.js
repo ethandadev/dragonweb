@@ -28,7 +28,10 @@ const MAX_VIDEO_SIZE = 15 * 1024 * 1024;
 
 // The only HTML pages the site serves. Everything else in the project root
 // (server.js, package.json, data/ ...) must stay private.
-const PAGES = ['index', 'announcements', 'forums', 'studentstuff', 'login', 'signup', 'dashboard'];
+const PAGES = [
+  'index', 'announcements', 'forums', 'studentstuff', 'login', 'signup', 'dashboard',
+  'crossword', 'snake', 'tetris',
+];
 
 // --- Storage helpers ---
 
