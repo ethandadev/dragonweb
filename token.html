@@ -37,7 +37,92 @@
             <button type="check.tokens">Check Your Balance</button>
         </form>
     </div>
+    <div id="panel-balance" class="panel">
+        <h1>Your Token Balance</h1>
+        <p>Spend your tokens to play games!</p>
+        <div class="token-display"><span id="token-count">0</span></div>
+  
+ <div id="panel-upload" class="panel hidden">
+    <h1>Homework Portal</h1>
+     <p>Upload completed assignments to earn tokens</p>
+        <form id="homework-form">
+            <div class="file-dropzone" onclick="document.getElementById('homework-file').click()">
+                <label for="homework-file" class="file-label" onclick="event.stopPropagation()">
+                    Browse Files to Upload
+                </label>
+                <input type="file" id="homework-file" required>
+                <div id="file-name" class="file-name-display"></div>
+            </div>
+            <button type="submit" class="action-btn">Submit Assignment</button>
+        </form>
+    </div>
 
+    <script>
+        // 1. Navigation Panel Link Logic
+        const navBalance = document.getElementById('nav-balance');
+        const navUpload = document.getElementById('nav-upload');
+        const panelBalance = document.getElementById('panel-balance');
+        const panelUpload = document.getElementById('panel-upload');
+
+        navBalance.addEventListener('click', () => {
+            navBalance.classList.add('active');
+            navUpload.classList.remove('active');
+            panelBalance.classList.remove('hidden');
+            panelUpload.classList.add('hidden');
+        });
+
+        navUpload.addEventListener('click', () => {
+            navUpload.classList.add('active');
+            navBalance.classList.remove('active');
+            panelUpload.classList.remove('hidden');
+            panelBalance.classList.add('hidden');
+        });
+
+        // 2. Data Synchronization & Server Connections
+        const fileInput = document.getElementById('homework-file');
+        const fileNameDisplay = document.getElementById('file-name');
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                fileNameDisplay.innerText = `Selected: ${fileInput.files[0].name}`;
+            } else {
+                fileNameDisplay.innerText = '';
+            }
+        });
+
+        async function fetchTokens() {
+            try {
+                const res = await fetch('/api/balance');
+                const data = await res.json();
+                document.getElementById('token-count').innerText = data.tokens;
+            } catch (err) {
+                console.log('Server offline - showing local demo profile data');
+            }
+        }
+
+        document.getElementById('homework-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('homework', fileInput.files[0]);
+
+            try {
+                const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                if (res.ok) {
+                    alert('File uploaded successfully! Token added.');
+                    fileInput.value = '';
+                    fileNameDisplay.innerText = '';
+                    fetchTokens();
+                }
+            } catch (err) {
+                alert('Connection error.');
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', fetchTokens);
+    </script>
+</body>
+</html>
+      
     <script src="app.js"></script>
 
 </body>
