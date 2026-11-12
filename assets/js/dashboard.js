@@ -93,10 +93,70 @@ async function loadPosts() {
   });
 }
 
+async function loadGameSettings() {
+  const response = await fetch('/api/admin/game-settings');
+  if (!response.ok) return showLogin();
+  const settings = await response.json();
+  $('games-enabled').checked = settings.gamesEnabled;
+}
+
+async function loadTokenUsers() {
+  const response = await fetch('/api/admin/token-users');
+  if (!response.ok) return showLogin();
+  const users = await response.json();
+  const list = $('token-users-list');
+  list.replaceChildren();
+
+  if (!users.length) {
+    list.append(empty('No users yet.'));
+    return;
+  }
+
+  users.forEach((user) => {
+    const controls = document.createElement('form');
+    controls.className = 'dash-token-controls';
+
+    const input = document.createElement('input');
+    input.className = 'dash-token-input';
+    input.type = 'number';
+    input.min = '0';
+    input.max = '10000';
+    input.step = '1';
+    input.value = user.tokens;
+    input.setAttribute('aria-label', `Token balance for ${user.name}`);
+
+    const save = document.createElement('button');
+    save.className = 'dash-token-save';
+    save.type = 'submit';
+    save.textContent = 'Save';
+
+    controls.append(input, save);
+    controls.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      $('token-users-error').classList.add('hidden');
+      const response = await fetch(`/api/admin/token-users/${encodeURIComponent(user.id)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tokens: Number(input.value) }),
+      });
+      if (!response.ok) {
+        const data = await response.json();
+        return showError($('token-users-error'), data.error || 'Could not save token balance.');
+      }
+      save.textContent = 'Saved';
+      window.setTimeout(() => { save.textContent = 'Save'; }, 1200);
+    });
+
+    list.append(row(user.name, user.email, controls));
+  });
+}
+
 function refresh() {
   loadStats();
   loadAnnouncements();
   loadPosts();
+  loadGameSettings();
+  loadTokenUsers();
 }
 
 function showDash() {
@@ -144,6 +204,20 @@ $('announce-form').addEventListener('submit', async (e) => {
     refresh();
   } else {
     showError($('announce-error'), (await res.json()).error);
+  }
+});
+
+$('game-settings-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  $('game-settings-error').classList.add('hidden');
+  const response = await fetch('/api/admin/game-settings', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ gamesEnabled: $('games-enabled').checked }),
+  });
+  if (!response.ok) {
+    const data = await response.json();
+    showError($('game-settings-error'), data.error || 'Could not save game access.');
   }
 });
 

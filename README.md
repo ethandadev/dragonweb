@@ -21,10 +21,12 @@ Now open http://localhost:3000 in your browser and you shall see the website.
 | `announcements.html` | Announcements posted from the dashboard |
 | `forums.html` | Student forum (log in to post and reply) |
 | `studentstuff.html` | Grade 6 and Grade 7/8 bell schedules. Works out the cycle day automatically and shows each student their own grade. Students can name their own classes for each block. Holidays live in `NO_SCHOOL` in `assets/js/schedule.js` |
-| `login.html` / `signup.html` | Student accounts |
+| `login.html` / `signup.html` / `forgot-password.html` | Student accounts and password help |
+| `token.html` | Token balance and permanent game unlocks for Snake and Tetris |
 | `dashboard.html` | Admin dashboard (post announcements, moderate the forum) |
 
 Data (users, posts, announcements) is saved as JSON in the `data/` folder, which is not committed to git.
+Teachers can enable or pause game access and set student token balances from the admin dashboard.
 
 ## Settings
 

@@ -69,6 +69,26 @@
             </div>
         </section>
 
+        <section class="dash-panel">
+            <h2>Game access</h2>
+            <p class="subtitle">When disabled, students cannot launch games, even if they have already unlocked them.</p>
+            <form id="game-settings-form">
+                <p class="form-error hidden" id="game-settings-error"></p>
+                <label class="game-access-toggle">
+                    <input type="checkbox" id="games-enabled">
+                    Allow students to play unlocked games
+                </label>
+                <button class="cta-button auth-submit" type="submit">Save game access</button>
+            </form>
+        </section>
+
+        <section class="dash-panel">
+            <h2>Student token balances</h2>
+            <p class="subtitle">Set each student’s balance here. Unlocking a game costs 1 token.</p>
+            <p class="form-error hidden" id="token-users-error"></p>
+            <div id="token-users-list" class="dash-list"></div>
+        </section>
+
         <div class="dash-columns">
             <section class="dash-panel">
                 <h2>New announcement</h2>

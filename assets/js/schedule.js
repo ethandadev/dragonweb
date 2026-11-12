@@ -3,20 +3,24 @@
 // are skipped.
 
 // A known date and its cycle day; every other date is counted from here.
-const ANCHOR = { date: '2026-10-13', day: 8 };
+const ANCHOR = { date: '2026-11-11', day: 6 };
 
 const SCHOOL_YEAR = { first: '2026-08-13', last: '2027-06-16' };
 
-// Weekdays with no school for students, from the 2026–27 schoolwide
-// calendar. Add ranges as [first, last].
+// Full-day student closures from the 2026–27 schoolwide calendar.
+// Add ranges as [first, last]; weekends are skipped separately.
 const NO_SCHOOL = [
-  ['2026-10-01', '2026-10-02'], // National Day, PD day
-  ['2026-10-19', '2026-10-23'], // Fall break
-  ['2026-11-26', '2026-11-27'], // PD day, Thanksgiving
+  ['2026-10-01', '2026-10-01'], // Public Holiday (National Day)
+  ['2026-10-02', '2026-10-02'], // Professional Development Day
+  ['2026-10-19', '2026-10-23'], // Fall Break & Chung Yeung Festival
+  ['2026-11-26', '2026-11-26'], // Professional Development Day
+  ['2026-11-27', '2026-11-27'], // Thanksgiving School Holiday
   ['2026-12-14', '2027-01-01'], // Winter break, New Year's Day
-  ['2027-02-05', '2027-02-12'], // PD day, Lunar New Year
-  ['2027-03-26', '2027-04-05'], // Spring break
-  ['2027-05-13', '2027-05-14'], // Buddha's Birthday, school holiday
+  ['2027-02-05', '2027-02-05'], // Professional Development Day
+  ['2027-02-08', '2027-02-12'], // Lunar New Year Break
+  ['2027-03-26', '2027-04-05'], // Spring Break, Easter, Ching Ming Festival
+  ['2027-05-13', '2027-05-13'], // Public Holiday (Buddha's Birthday)
+  ['2027-05-14', '2027-05-14'], // School Holiday
   ['2027-06-09', '2027-06-09'], // Tuen Ng Festival
 ];
 

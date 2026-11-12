@@ -12,6 +12,7 @@ const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const POSTS_FILE = path.join(DATA_DIR, 'posts.json');
 const ANNOUNCEMENTS_FILE = path.join(DATA_DIR, 'announcements.json');
 const STATS_FILE = path.join(DATA_DIR, 'stats.json');
+const GAME_SETTINGS_FILE = path.join(DATA_DIR, 'game-settings.json');
 
 const ADMIN_USER = process.env.ADMIN_USER || 'admin';
 const ADMIN_PASS = process.env.ADMIN_PASS || 'admin123';
@@ -23,14 +24,16 @@ const ADMIN_EMAILS = new Set(
 );
 
 const GRADES = [6, 7, 8];
+const GAMES = new Set(['snake', 'tetris']);
+const GAME_UNLOCK_COST = 1;
 const MAX_MEDIA_SIZE = 5 * 1024 * 1024;
 const MAX_VIDEO_SIZE = 15 * 1024 * 1024;
 
 // The only HTML pages the site serves. Everything else in the project root
 // (server.js, package.json, data/ ...) must stay private.
 const PAGES = [
-  'index', 'announcements', 'forums', 'studentstuff', 'login', 'signup', 'dashboard',
-  'crossword', 'snake', 'tetris',
+  'index', 'announcements', 'forums', 'studentstuff', 'login', 'signup', 'forgot-password', 'dashboard', 'poll',
+  'crossword', 'token',
 ];
 
 // --- Storage helpers ---
@@ -52,6 +55,7 @@ const readUsers = () => readJson(USERS_FILE, []);
 const writeUsers = (users) => writeJson(USERS_FILE, users);
 const readPosts = () => readJson(POSTS_FILE, []);
 const writePosts = (posts) => writeJson(POSTS_FILE, posts);
+const readGameSettings = () => readJson(GAME_SETTINGS_FILE, { gamesEnabled: false });
 
 function createId(prefix) {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`;
@@ -239,6 +243,43 @@ app.patch('/api/me', (req, res) => {
   res.json(publicUser(user));
 });
 
+app.get('/api/tokens', (req, res) => {
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: 'Log in to view your tokens.' });
+
+  res.json({
+    tokens: Number.isSafeInteger(user.tokens) && user.tokens >= 0 ? user.tokens : 0,
+    unlockedGames: Array.isArray(user.unlockedGames)
+      ? user.unlockedGames.filter((game) => GAMES.has(game))
+      : [],
+    gamesEnabled: readGameSettings().gamesEnabled === true,
+    unlockCost: GAME_UNLOCK_COST,
+  });
+});
+
+app.post('/api/games/:game/unlock', (req, res) => {
+  const user = getUser(req);
+  if (!user) return res.status(401).json({ error: 'Log in to unlock games.' });
+  if (!GAMES.has(req.params.game)) return res.status(404).json({ error: 'Game not found.' });
+
+  const users = readUsers();
+  const account = users.find((candidate) => candidate.id === user.id);
+  if (!Array.isArray(account.unlockedGames)) account.unlockedGames = [];
+  if (account.unlockedGames.includes(req.params.game)) {
+    return res.json({ ok: true, tokens: Number.isSafeInteger(account.tokens) ? account.tokens : 0 });
+  }
+
+  const balance = Number.isSafeInteger(account.tokens) && account.tokens >= 0 ? account.tokens : 0;
+  if (balance < GAME_UNLOCK_COST) {
+    return res.status(400).json({ error: 'You need 1 token to unlock this game.' });
+  }
+
+  account.tokens = balance - GAME_UNLOCK_COST;
+  account.unlockedGames.push(req.params.game);
+  writeUsers(users);
+  res.json({ ok: true, tokens: account.tokens });
+});
+
 // --- Forum API ---
 
 app.get('/api/forum/posts', (req, res) => {
@@ -371,6 +412,42 @@ app.get('/api/admin/me', requireAdmin, (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('/api/admin/game-settings', requireAdmin, (req, res) => {
+  res.json({ gamesEnabled: readGameSettings().gamesEnabled === true });
+});
+
+app.patch('/api/admin/game-settings', requireAdmin, (req, res) => {
+  if (typeof req.body?.gamesEnabled !== 'boolean') {
+    return res.status(400).json({ error: 'Choose whether games are enabled.' });
+  }
+  writeJson(GAME_SETTINGS_FILE, { gamesEnabled: req.body.gamesEnabled });
+  res.json({ gamesEnabled: req.body.gamesEnabled });
+});
+
+app.get('/api/admin/token-users', requireAdmin, (req, res) => {
+  res.json(readUsers().map((user) => ({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    tokens: Number.isSafeInteger(user.tokens) && user.tokens >= 0 ? user.tokens : 0,
+  })));
+});
+
+app.patch('/api/admin/token-users/:userId', requireAdmin, (req, res) => {
+  const tokens = req.body?.tokens;
+  if (!Number.isSafeInteger(tokens) || tokens < 0 || tokens > 10000) {
+    return res.status(400).json({ error: 'Token balance must be a whole number from 0 to 10,000.' });
+  }
+
+  const users = readUsers();
+  const user = users.find((candidate) => candidate.id === req.params.userId);
+  if (!user) return res.status(404).json({ error: 'User not found.' });
+
+  user.tokens = tokens;
+  writeUsers(users);
+  res.json({ id: user.id, tokens: user.tokens });
+});
+
 app.get('/api/admin/stats', requireAdmin, (req, res) => {
   const users = readUsers();
   const stats = readJson(STATS_FILE, { announcementViews: 0 });
@@ -440,6 +517,18 @@ app.delete('/api/admin/announcements/:id', requireAdmin, (req, res) => {
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+for (const game of GAMES) {
+  const gameFile = path.join(__dirname, `${game}.html`);
+  app.get([`/${game}`, `/${game}.html`], (req, res) => {
+    const user = getUser(req);
+    const settings = readGameSettings();
+    if (!user || settings.gamesEnabled !== true
+      || !Array.isArray(user.unlockedGames) || !user.unlockedGames.includes(game)) {
+      return res.redirect(`/token.html?game=${game}`);
+    }
+    res.sendFile(gameFile);
+  });
+}
 PAGES.forEach((page) => {
   const file = path.join(__dirname, `${page}.html`);
   app.get([`/${page}`, `/${page}.html`], (req, res) => res.sendFile(file));

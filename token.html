@@ -3,127 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homework Token Arcade</title>
+    <title>Dragon Web | Token Arcade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="icon" href="/assets/images/dragonweb_icon.png">
     <style>
-        body { font-family: system-ui, sans-serif; background: #121212; color: #fff; padding: 2rem; max-width: 600px; margin: 0 auto; }
-        .card { background: #1e1e1e; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; border: 1px solid #333; }
-        .token-display { font-size: 2rem; font-weight: bold; color: #4caf50; }
-        button { background: #007acc; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; cursor: pointer; font-size: 1rem; }
-        button:hover { background: #005999; }
-        button:disabled { background: #444; cursor: not-allowed; }
+        .arcade-section {
+            max-width: 52rem;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-sm);
+        }
+        .arcade-balance {
+            margin: var(--space-md) 0;
+            padding: var(--space-md);
+            background: var(--color-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            font-size: 1.2rem;
+        }
+        .arcade-games {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+            gap: var(--space-md);
+        }
+        .arcade-game {
+            padding: var(--space-md);
+            background: var(--color-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        .arcade-game h2 { margin-top: 0; }
+        .arcade-game .cta-button { display: block; text-align: center; }
+        .arcade-status { color: var(--color-text-muted); }
     </style>
 </head>
 <body>
-
-     <header class="homwork-header">
-        <h1 class="title">Turn in complete homeworks</h1>
-        <p class="subtitle">This is were you turn in any completed homeworks (one time only!) to earn credits you can spend on our games!</p>
-    </header>
-    
-    <h1> Homework Turn-In</h1>
-    
-    <!-- Token Balance Sheet -->
-    <div class="card">
-        <h3>Your Balance</h3>
-        <div class="token-display"><span id="token-count">0</span> Tokens</div>
-    </div>
-
-    <!-- Upload Portal -->
-    <div class="card">
-        <h3>Upload Completed Homework</h3>
-        <form id="upload-form">
-            <input type="file" id="homework-file" required style="margin-bottom: 1rem; display: block;">
-            <button type="submit">Submit for 1 Token</button>
-            <button type="check.tokens">Check Your Balance</button>
-        </form>
-    </div>
-    <div id="panel-balance" class="panel">
-        <h1>Your Token Balance</h1>
-        <p>Spend your tokens to play games!</p>
-        <div class="token-display"><span id="token-count">0</span></div>
-  
- <div id="panel-upload" class="panel hidden">
-    <h1>Homework Portal</h1>
-     <p>Upload completed assignments to earn tokens</p>
-        <form id="homework-form">
-            <div class="file-dropzone" onclick="document.getElementById('homework-file').click()">
-                <label for="homework-file" class="file-label" onclick="event.stopPropagation()">
-                    Browse Files to Upload
-                </label>
-                <input type="file" id="homework-file" required>
-                <div id="file-name" class="file-name-display"></div>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-logo"><img src="/assets/images/dragonweb_icon.png" alt="Dragon Web Home"></a>
+        <a href="announcements.html">Announcements</a>
+        <a href="forums.html">Forums</a>
+        <a href="studentstuff.html">Student Stuff</a>
+        <div class="navbar-auth">
+            <div id="user-profile" class="profile-container hidden">
+                <span id="avatar-img" class="avatar"></span>
+                <span id="user-greeting"></span>
             </div>
-            <button type="submit" class="action-btn">Submit Assignment</button>
-        </form>
-    </div>
+            <a id="login-link" href="login.html" class="nav-btn">Login / Sign Up</a>
+            <button id="logout-btn" class="nav-btn hidden" onclick="logout()">Logout</button>
+        </div>
+    </nav>
 
-    <script>
-        // 1. Navigation Panel Link Logic
-        const navBalance = document.getElementById('nav-balance');
-        const navUpload = document.getElementById('nav-upload');
-        const panelBalance = document.getElementById('panel-balance');
-        const panelUpload = document.getElementById('panel-upload');
+    <main class="arcade-section">
+        <h1 class="title">Token Arcade</h1>
+        <p class="subtitle">Unlock each game once with 1 token. Your teacher controls when unlocked games can be played.</p>
+        <p class="form-error hidden" id="arcade-error" role="alert"></p>
+        <div id="arcade-balance" class="arcade-balance">Loading your token balance…</div>
+        <div id="arcade-games" class="arcade-games"></div>
+    </main>
 
-        navBalance.addEventListener('click', () => {
-            navBalance.classList.add('active');
-            navUpload.classList.remove('active');
-            panelBalance.classList.remove('hidden');
-            panelUpload.classList.add('hidden');
-        });
-
-        navUpload.addEventListener('click', () => {
-            navUpload.classList.add('active');
-            navBalance.classList.remove('active');
-            panelUpload.classList.remove('hidden');
-            panelBalance.classList.add('hidden');
-        });
-
-        // 2. Data Synchronization & Server Connections
-        const fileInput = document.getElementById('homework-file');
-        const fileNameDisplay = document.getElementById('file-name');
-
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length > 0) {
-                fileNameDisplay.innerText = `Selected: ${fileInput.files[0].name}`;
-            } else {
-                fileNameDisplay.innerText = '';
-            }
-        });
-
-        async function fetchTokens() {
-            try {
-                const res = await fetch('/api/balance');
-                const data = await res.json();
-                document.getElementById('token-count').innerText = data.tokens;
-            } catch (err) {
-                console.log('Server offline - showing local demo profile data');
-            }
-        }
-
-        document.getElementById('homework-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData();
-            formData.append('homework', fileInput.files[0]);
-
-            try {
-                const res = await fetch('/api/upload', { method: 'POST', body: formData });
-                if (res.ok) {
-                    alert('File uploaded successfully! Token added.');
-                    fileInput.value = '';
-                    fileNameDisplay.innerText = '';
-                    fetchTokens();
-                }
-            } catch (err) {
-                alert('Connection error.');
-            }
-        });
-
-        window.addEventListener('DOMContentLoaded', fetchTokens);
-    </script>
-</body>
-</html>
-      
-    <script src="app.js"></script>
-
+    <script src="/assets/js/auth.js" defer></script>
+    <script src="/assets/js/token.js" defer></script>
 </body>
 </html>
